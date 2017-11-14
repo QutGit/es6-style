@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="http://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+  <script src="http://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+  <script src="http://cdn.bootcss.com/babel-core/5.8.24/browser.min.js"></script>
+  <link href="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app" class="app"></div>
+  <script type="text/babel">
+
+    class Item extends React.Component {
+      render() {
+        return (
+          <div className="form-group">
+            <label className="col-xs-4 control-label">{this.props.name}</label>
+            <div className="col-xs-8">
+              <input type='text' className='form-control' />
+            </div>
+          </div>
+        )
+      }
+    }
+
+    class Example extends React.Component {
+      constructor() {
+        super();
+        this.state = {
+          list: [
+            {name: 'Foo', id: 1444610101010},
+            {name: 'Bar', id: 1444600000000}
+          ]
+        };
+      }
+
+      addItem() {
+        const id = +new Date;
+        this.setState({
+          list: [ {name: 'Baz' + id, id} , ...this.state.list]
+        });
+      }
+
+      render() {
+        return (
+          <div>
+            <button className='btn btn-primary' onClick={this.addItem.bind(this)}><b>Add item</b></button>
+            <h3>Dangerous <code>key=index</code></h3>
+            <form className="form-horizontal">
+              {this.state.list.map((todo, index) =>
+                <Item {...todo}
+                key={index} />
+              )}
+            </form>
+            <h3>Better <code>key=id</code></h3>
+            <form className="form-horizontal">
+              {this.state.list.map((todo) =>
+                <Item {...todo}
+                key={todo.id} />
+              )}
+            </form>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Example />, document.getElementById('app'))
+
+  </script>
+</body>
+</html>
